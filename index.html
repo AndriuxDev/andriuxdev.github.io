@@ -12,7 +12,7 @@
 
     <meta
         name="description"
-        content="Andriux Studios — creative projects, content, commissions, and more."
+        content="Andriux Studios creates original creative projects, content, commissions, and ideas."
     >
 
     <title>Andriux Studios</title>
@@ -52,6 +52,7 @@
                 type="button"
                 aria-label="Open navigation menu"
                 aria-expanded="false"
+                aria-controls="nav-container"
             >
                 <span></span>
                 <span></span>
@@ -60,7 +61,10 @@
 
 
             <!-- Navigation -->
-            <div class="nav-container" id="nav-container">
+            <div
+                class="nav-container"
+                id="nav-container"
+            >
 
                 <div class="nav-links">
 
@@ -94,7 +98,10 @@
                     type="button"
                     aria-label="Switch to light mode"
                 >
-                    <span id="theme-icon">☀</span>
+                    <span
+                        id="theme-icon"
+                        aria-hidden="true"
+                    >☀</span>
                 </button>
 
             </div>
@@ -122,7 +129,7 @@
 
                 <img
                     src="images/logo3NEW.png"
-                    alt="Andriux Studios"
+                    alt=""
                     class="hero-logo"
                 >
 
@@ -206,7 +213,7 @@
 
                         <img
                             src="images/project1.jpg"
-                            alt="Project One"
+                            alt="Project One creative work"
                         >
 
                         <div class="project-overlay">
@@ -251,7 +258,7 @@
 
                         <img
                             src="images/project2.jpg"
-                            alt="Project Two"
+                            alt="Project Two creative work"
                         >
 
                         <div class="project-overlay">
@@ -296,7 +303,7 @@
 
                         <img
                             src="images/project3.jpg"
-                            alt="Project Three"
+                            alt="Project Three creative work"
                         >
 
                         <div class="project-overlay">
@@ -335,7 +342,7 @@
 
                 <a href="projects.html">
                     View All Projects
-                    <span>→</span>
+                    <span aria-hidden="true">→</span>
                 </a>
 
             </div>
