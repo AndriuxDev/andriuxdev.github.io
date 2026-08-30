@@ -111,6 +111,21 @@ button {
 
 
 /* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+a:focus-visible,
+button:focus-visible {
+    outline:
+        2px solid
+        var(--text);
+
+    outline-offset:
+        4px;
+}
+
+
+/* =========================================================
    HEADER
    ========================================================= */
 
@@ -120,9 +135,11 @@ button {
     background: var(--background);
 
     border-bottom:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
     position: relative;
+
     z-index: 1000;
 }
 
@@ -153,9 +170,10 @@ button {
     display: block;
 
     position: relative;
+
     z-index: 1002;
 }
-  
+
 .logo img {
     width: 120px;
 
@@ -169,7 +187,7 @@ button {
 
 
 /*
-   Your logo is black.
+   Logo is black by default.
 
    Dark mode:
    black → white
@@ -265,7 +283,8 @@ body.light-theme .logo img {
     justify-content: center;
 
     border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
     border-radius: 50%;
 
@@ -306,7 +325,8 @@ body.light-theme .logo img {
     padding: 8px;
 
     border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
     background: transparent;
 
@@ -612,7 +632,8 @@ body.light-theme .hero-logo {
             4.5rem
         );
 
-    line-height: 1;
+    line-height:
+        1;
 
     letter-spacing:
         -0.04em;
@@ -702,15 +723,6 @@ body.light-theme .hero-logo {
     transition:
         transform 0.5s ease,
         filter 0.5s ease;
-}
-
-.project-card:hover
-.project-image img {
-    transform:
-        scale(1.05);
-
-    filter:
-        grayscale(0%);
 }
 
 
@@ -1129,9 +1141,12 @@ body.light-theme
             absolute;
 
         top:
-            75px;
+            100%;
 
         left:
+            0;
+
+        right:
             0;
 
         width:
@@ -1175,6 +1190,9 @@ body.light-theme
             opacity 0.25s ease,
             transform 0.25s ease,
             visibility 0.25s ease;
+
+        z-index:
+            1001;
     }
 
 
@@ -1277,6 +1295,17 @@ body.light-theme
             column;
     }
 
+
+    /* Project interactions */
+
+    .project-card:hover {
+        transform:
+            none;
+
+        box-shadow:
+            none;
+    }
+
 }
 
 
@@ -1344,6 +1373,72 @@ body.light-theme
 
         gap:
             15px;
+    }
+
+}
+
+
+/* =========================================================
+   DESKTOP-ONLY HOVER EFFECTS
+   ========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+
+    .project-card:hover {
+        transform:
+            translateY(-8px);
+
+        border-color:
+            var(--text-muted);
+
+        box-shadow:
+            0 15px 40px
+            var(--shadow);
+    }
+
+
+    .project-card:hover
+    .project-image img {
+        transform:
+            scale(1.05);
+
+        filter:
+            grayscale(0%);
+    }
+
+
+    .project-card:hover
+    .project-overlay {
+        opacity:
+            1;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior:
+            auto;
+    }
+
+
+    *,
+    *::before,
+    *::after {
+        transition-duration:
+            0.01ms !important;
+
+        animation-duration:
+            0.01ms !important;
+
+        animation-iteration-count:
+            1 !important;
     }
 
 }
