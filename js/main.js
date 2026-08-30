@@ -7,6 +7,7 @@
 /* =========================================================
    WAIT FOR PAGE TO LOAD
    ========================================================= */
+console.log("Andriux Studios JS loaded!");
 
 document.addEventListener("DOMContentLoaded", () => {
 
