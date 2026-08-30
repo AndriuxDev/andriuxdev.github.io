@@ -37,39 +37,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function setTheme(theme) {
 
-        if (theme === "light") {
+        const isLight =
+            theme === "light";
 
-            document.body.classList.add(
-                "light-theme"
+
+        document.body.classList.toggle(
+            "light-theme",
+            isLight
+        );
+
+
+        if (themeIcon) {
+
+            themeIcon.textContent =
+                isLight ? "☾" : "☀";
+
+        }
+
+
+        if (themeToggle) {
+
+            themeToggle.setAttribute(
+                "aria-label",
+                isLight
+                    ? "Switch to dark mode"
+                    : "Switch to light mode"
             );
-
-            if (themeIcon) {
-                themeIcon.textContent = "☾";
-            }
-
-            if (themeToggle) {
-                themeToggle.setAttribute(
-                    "aria-label",
-                    "Switch to dark mode"
-                );
-            }
-
-        } else {
-
-            document.body.classList.remove(
-                "light-theme"
-            );
-
-            if (themeIcon) {
-                themeIcon.textContent = "☀";
-            }
-
-            if (themeToggle) {
-                themeToggle.setAttribute(
-                    "aria-label",
-                    "Switch to light mode"
-                );
-            }
 
         }
 
@@ -84,22 +77,14 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.getItem("theme");
 
 
-    if (savedTheme === "light") {
+    if (
+        savedTheme === "light" ||
+        savedTheme === "dark"
+    ) {
 
-        setTheme("light");
-
-    } else if (savedTheme === "dark") {
-
-        setTheme("dark");
+        setTheme(savedTheme);
 
     } else {
-
-        /*
-            No saved preference.
-
-            Use the visitor's operating-system
-            preference.
-        */
 
         const prefersLight =
             window.matchMedia(
@@ -107,15 +92,11 @@ document.addEventListener("DOMContentLoaded", () => {
             ).matches;
 
 
-        if (prefersLight) {
-
-            setTheme("light");
-
-        } else {
-
-            setTheme("dark");
-
-        }
+        setTheme(
+            prefersLight
+                ? "light"
+                : "dark"
+        );
 
     }
 
@@ -136,25 +117,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
 
-                if (isLight) {
+                const newTheme =
+                    isLight
+                        ? "dark"
+                        : "light";
 
-                    setTheme("dark");
 
-                    localStorage.setItem(
-                        "theme",
-                        "dark"
-                    );
+                setTheme(newTheme);
 
-                } else {
 
-                    setTheme("light");
-
-                    localStorage.setItem(
-                        "theme",
-                        "light"
-                    );
-
-                }
+                localStorage.setItem(
+                    "theme",
+                    newTheme
+                );
 
             }
         );
@@ -166,44 +141,102 @@ document.addEventListener("DOMContentLoaded", () => {
        MOBILE MENU
        ===================================================== */
 
+    function closeMenu(
+        returnFocus = false
+    ) {
+
+        if (navContainer) {
+
+            navContainer.classList.remove(
+                "menu-open"
+            );
+
+        }
+
+
+        if (menuToggle) {
+
+            menuToggle.classList.remove(
+                "menu-active"
+            );
+
+
+            menuToggle.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+
+            menuToggle.setAttribute(
+                "aria-label",
+                "Open navigation menu"
+            );
+
+
+            if (returnFocus) {
+                menuToggle.focus();
+            }
+
+        }
+
+    }
+
+
+    function openMenu() {
+
+        if (!navContainer || !menuToggle) {
+            return;
+        }
+
+
+        navContainer.classList.add(
+            "menu-open"
+        );
+
+
+        menuToggle.classList.add(
+            "menu-active"
+        );
+
+
+        menuToggle.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+
+        menuToggle.setAttribute(
+            "aria-label",
+            "Close navigation menu"
+        );
+
+    }
+
+
     if (menuToggle && navContainer) {
 
         menuToggle.addEventListener(
             "click",
-            () => {
+            (event) => {
+
+                event.stopPropagation();
+
 
                 const isOpen =
-                    navContainer.classList.toggle(
+                    navContainer.classList.contains(
                         "menu-open"
                     );
 
 
-                /*
-                    Animate hamburger into X.
-                */
+                if (isOpen) {
 
-                menuToggle.classList.toggle(
-                    "menu-active",
-                    isOpen
-                );
+                    closeMenu();
 
+                } else {
 
-                /*
-                    Accessibility.
-                */
+                    openMenu();
 
-                menuToggle.setAttribute(
-                    "aria-expanded",
-                    isOpen ? "true" : "false"
-                );
-
-
-                menuToggle.setAttribute(
-                    "aria-label",
-                    isOpen
-                        ? "Close navigation menu"
-                        : "Open navigation menu"
-                );
+                }
 
             }
         );
@@ -228,34 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 "click",
                 () => {
 
-                    if (navContainer) {
-
-                        navContainer.classList.remove(
-                            "menu-open"
-                        );
-
-                    }
-
-
-                    if (menuToggle) {
-
-                        menuToggle.classList.remove(
-                            "menu-active"
-                        );
-
-
-                        menuToggle.setAttribute(
-                            "aria-expanded",
-                            "false"
-                        );
-
-
-                        menuToggle.setAttribute(
-                            "aria-label",
-                            "Open navigation menu"
-                        );
-
-                    }
+                    closeMenu();
 
                 }
             );
@@ -272,8 +278,10 @@ document.addEventListener("DOMContentLoaded", () => {
         "click",
         (event) => {
 
-            if (!navContainer ||
-                !menuToggle) {
+            if (
+                !navContainer ||
+                !menuToggle
+            ) {
 
                 return;
 
@@ -297,23 +305,35 @@ document.addEventListener("DOMContentLoaded", () => {
                 !clickedMenuButton
             ) {
 
-                navContainer.classList.remove(
+                closeMenu();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       CLOSE MENU WITH ESCAPE
+       ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        (event) => {
+
+            if (event.key !== "Escape") {
+                return;
+            }
+
+
+            if (
+                navContainer &&
+                navContainer.classList.contains(
                     "menu-open"
-                );
+                )
+            ) {
 
-                menuToggle.classList.remove(
-                    "menu-active"
-                );
-
-                menuToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                menuToggle.setAttribute(
-                    "aria-label",
-                    "Open navigation menu"
-                );
+                closeMenu(true);
 
             }
 
@@ -333,28 +353,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 window.innerWidth > 800
             ) {
 
-                if (navContainer) {
-
-                    navContainer.classList.remove(
-                        "menu-open"
-                    );
-
-                }
-
-
-                if (menuToggle) {
-
-                    menuToggle.classList.remove(
-                        "menu-active"
-                    );
-
-
-                    menuToggle.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
-
-                }
+                closeMenu();
 
             }
 
