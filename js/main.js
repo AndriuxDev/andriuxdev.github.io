@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (themeIcon) {
 
             themeIcon.textContent =
-                isLight ? "☾" : "☀";
+                isLight ? "Dark Mode" : "Light Mode";
 
         }
 
